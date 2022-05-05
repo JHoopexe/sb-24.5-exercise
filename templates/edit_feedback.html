@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Feedback Edit Feedback</title>
+</head>
+<body>
+    <span>{{current_user}}</span>
+    <a href="/logout">Logout</a>
+    <h1>Flask Feedback</h1>
+    <form action="/feedback/{{feedback.id}}/update", method="POST">
+        {{form.hidden_tag()}}
+        {% for field in form if field.widget.input_type != 'hidden' %}
+        <p> 
+            {{field.label}}
+            {{field}} 
+
+            {% for error in field.errors %}
+            {{error}}
+            {% endfor %}
+        </p>
+        {% endfor %}
+        <button type="Submit">Edit</button>
+    </form>
+    <form action="/users/{{feedback.username}}">
+        <button>Cancel</button>
+    </form>
+</body>
+</html>

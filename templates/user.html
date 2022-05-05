@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Feedback User</title>
+</head>
+<body>
+    {% if 'username' in session %}
+    <span>{{current_user}}</span>
+    <a href="/logout">Logout</a>
+    {% endif %}
+    <h1>Flask Feedback</h1>
+    <br>
+    <p>Username: {{user.username}}</p>
+    <p>Email: {{user.email}}</p>
+    <p>First Name: {{user.first_name}}</p>
+    <p>Last Name: {{user.last_name}}</p>
+    <br>
+    {% if user.username == current_user %}
+    <a href="/users/{{user.username}}/delete">Delete Account</a>
+    {% endif %}
+    <br>
+    <h4>Feedback</h4>
+    {% for f in feedback %}
+        {% if f.posted_to == user.username %}
+        <p><b>{{f.title}}</b></p>
+        <p>{{f.content}}</p>
+            {% if f.created_by == current_user %}
+            <a href="/feedback/{{f.id}}/update">Edit</a>
+            <a href="/feedback/{{f.id}}/delete">Delete</a>
+            <br>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+    <br>
+    {% if 'username' in session %}
+    <a href="/users/{{user.username}}/feedback/add">Add Feedback</a>
+    {% endif %}
+    <br>
+    <h4>Other Users</h4>
+    <ul>
+        {% for u in users %}
+            {% if u.username != user.username %}
+            <li><a href="/users/{{u.username}}">{{u.first_name}} {{u.last_name}}</a></li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+    <br>
+    {% if 'username' not in session %}
+    <a href="/">Register</a>
+    <a href="/login">Login</a>
+    {% endif %}
+</body>
+</html>
